@@ -2,16 +2,43 @@ docker run --name postgres-lavra -e "POSTGRES_PASSWORD=postgres" -p 5433:5432 -v
 docker run  -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin -p 8080:8080 quay.io/keycloak/keycloak:7.0.1
 
 mvn io.quarkus:quarkus-maven-plugin:1.5.0.Final:create \
+    -DprojectGroupId=br.edu.puc.sca.domain \
+    -DprojectArtifactId=sca-domain-msa
+
+./mvnw quarkus:add-extension -Dextensions="quarkus-hibernate-orm-panache,quarkus-jdbc-postgresql"
+
+<dependency>
+  <groupId>org.hibernate</groupId>
+  <artifactId>hibernate-envers</artifactId>
+</dependency>
+
+mvn io.quarkus:quarkus-maven-plugin:1.5.0.Final:create \
     -DprojectGroupId=br.edu.puc.sca.lavra \
-    -DprojectArtifactId=sca-lavra-msa \
-    -DclassName="br.edu.puc.sca.LavraResource" \
+    -DprojectArtifactId=sca-lavra-api-msa \
+    -DclassName="br.edu.puc.sca.resource.LavraResource" \
     -Dpath="/api/v1/lavras"
+
+./mvnw quarkus:add-extension -Dextensions="quarkus-resteasy,quarkus-resteasy-jsonb,quarkus-smallrye-openapi,smallrye-metrics,quarkus-oidc,rest-client,quarkus-hibernate-orm-panache,quarkus-jdbc-postgresql"
+
+<dependency>
+  <groupId>br.edu.puc.sca.domain</groupId>
+  <artifactId>sca-domain-msa</artifactId>
+  <version>1.0-SNAPSHOT</version>
+</dependency>
 
 mvn io.quarkus:quarkus-maven-plugin:1.5.0.Final:create \
     -DprojectGroupId=br.edu.puc.sca.equipamento \
-    -DprojectArtifactId=sca-equipamento-msa \
-    -DclassName="br.edu.puc.sca.EquipamentoResource" \
+    -DprojectArtifactId=sca-equipamento-api-msa \
+    -DclassName="br.edu.puc.sca.resource.EquipamentoResource" \
     -Dpath="/api/v1/equipamentos"
+
+  <dependency>
+    <groupId>br.edu.puc.sca.domain</groupId>
+    <artifactId>sca-domain-msa</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </dependency>
+
+./mvnw quarkus:add-extension -Dextensions="quarkus-resteasy,quarkus-resteasy-jsonb,quarkus-smallrye-openapi,smallrye-metrics,quarkus-oidc,rest-client,quarkus-hibernate-orm-panache,quarkus-jdbc-postgresql"
 
 ./mvnw quarkus:add-extension -Dextensions="quarkus-resteasy,quarkus-resteasy-jsonb,quarkus-hibernate-orm-panache,quarkus-jdbc-postgresql,quarkus-smallrye-openapi,smallrye-metrics,quarkus-oidc,rest-client"
 
