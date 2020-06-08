@@ -1,0 +1,35 @@
+docker run --name postgres-lavra -e "POSTGRES_PASSWORD=postgres" -p 5433:5432 -v ~/Desktop/PostgreSQL:/var/lib/postgresql/data -d postgres
+docker run  -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin -p 8080:8080 quay.io/keycloak/keycloak:7.0.1
+
+mvn io.quarkus:quarkus-maven-plugin:1.5.0.Final:create \
+    -DprojectGroupId=br.edu.puc.sca.lavra \
+    -DprojectArtifactId=sca-lavra-msa \
+    -DclassName="br.edu.puc.sca.LavraResource" \
+    -Dpath="/api/v1/lavras"
+
+mvn io.quarkus:quarkus-maven-plugin:1.5.0.Final:create \
+    -DprojectGroupId=br.edu.puc.sca.equipamento \
+    -DprojectArtifactId=sca-equipamento-msa \
+    -DclassName="br.edu.puc.sca.EquipamentoResource" \
+    -Dpath="/api/v1/equipamentos"
+
+./mvnw quarkus:add-extension -Dextensions="quarkus-resteasy,quarkus-resteasy-jsonb,quarkus-hibernate-orm-panache,quarkus-jdbc-postgresql,quarkus-smallrye-openapi,smallrye-metrics,quarkus-oidc,rest-client"
+
+<dependency>
+  <groupId>org.hibernate</groupId>
+  <artifactId>hibernate-envers</artifactId>
+</dependency>
+
+
+# Tokens
+
+export access_token=$(\
+  curl -X POST http://localhost:8080/auth/realms/sca/protocol/openid-connect/token \
+  --user sca-lavra-msa:2eda88de-9bd9-418c-bbc4-4f7af729404c \
+  -H 'content-type: application/x-www-form-urlencoded' \
+  -d 'username=user2&password=user2&grant_type=password' | jq --raw-output '.access_token' \
+ )
+
+curl -v -X GET \
+  http://localhost:8180/api/v1/users/me \
+  -H "Authorization: Bearer "$access_token
