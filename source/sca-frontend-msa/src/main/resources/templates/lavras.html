@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<script src="https://unpkg.com/unpoly@0.61.0/dist/unpoly.min.js"
+    integrity="sha384-gW6zzUz/Kx42R/cIyfZeFdlW18HuD/vtSCfsv6cdlfeg3CRqh89KzWER1dQ1i4BJ"
+    crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://unpkg.com/unpoly@0.61.0/dist/unpoly.min.css"
+    integrity="sha384-Au6LjS9fxDpwn3+26YmukmOumZUmryd8ONenkVIoH4eEPH1tACqLsVfqz9tBrvQy" crossorigin="anonymous">
+
+<title>Sistema de Controle Ambiental</title>
+
+<style>
+    .table td.fit,
+    .table th.fit {
+        white-space: nowrap;
+        width: 1%;
+    }
+
+    .completed {
+        text-decoration: line-through;
+    }
+</style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Lavras</h1>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col" class="fit">Id</th>
+                    <th scope="col" class="fit">Nome</th>
+                    <th scope="col" class="fit">Descricao</th>
+                    <th scope="col" class="fit">Status</th>
+                    <th scope="col" class="fit">Metodo Lavra</th>
+                </tr>
+            </thead>
+        {#if lavras.size == 0}
+            <tr>
+                <td colspan="5">No data found.</td>
+            </tr>
+        {#else}
+
+        {#for lavra in lavras}
+            <tr>
+                <th scope="row" class="fit">{lavra.id}</th>
+                <td scope="row" class="fit">{lavra.nome}</td>
+                <td scope="row" class="fit">{lavra.descricao}</td>
+                <td scope="row" class="fit">{lavra.status}</td>
+                <td scope="row" class="fit">{lavra.metodoLavra}</td>
+            </tr>
+        {/for}
+        {/if}
+        </table>
+    </div>
+
+    <div class="container">
+        <h1>Lavras Audit</h1>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col" class="fit">Id</th>
+                    <th scope="col" class="fit">Nome</th>
+                    <th scope="col" class="fit">Descricao</th>
+                    <th scope="col" class="fit">Status</th>
+                    <th scope="col" class="fit">Metodo Lavra</th>
+                </tr>
+            </thead>
+        {#if lavrasAudit.size == 0}
+            <tr>
+                <td colspan="5">No data found.</td>
+            </tr>
+        {#else}
+
+        {#for lavraAudit in lavrasAudit}
+            <tr>
+                <th scope="row" class="fit">{lavraAudit.id}</th>
+                <td scope="row" class="fit">{lavraAudit.nome}</td>
+                <td scope="row" class="fit">{lavraAudit.descricao}</td>
+                <td scope="row" class="fit">{lavraAudit.status}</td>
+                <td scope="row" class="fit">{lavraAudit.metodoLavra}</td>
+            </tr>
+        {/for}
+        {/if}
+        </table>
+    </div>
+  </body>
+</html>

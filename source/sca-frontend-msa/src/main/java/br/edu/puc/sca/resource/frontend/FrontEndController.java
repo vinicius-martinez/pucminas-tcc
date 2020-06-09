@@ -17,9 +17,13 @@ import br.edu.puc.sca.domain.Lavra;
 import br.edu.puc.sca.service.FrontEndEquipamentoService;
 import br.edu.puc.sca.service.FrontEndLavraAuditService;
 import br.edu.puc.sca.service.FrontEndLavraService;
+import io.quarkus.qute.Template;
+import io.quarkus.qute.TemplateInstance;
+import io.quarkus.security.Authenticated;
 
 @Path("/frontend")
 @ApplicationScoped
+@Authenticated
 public class FrontEndController {
 
     @Inject
@@ -38,24 +42,30 @@ public class FrontEndController {
     @RestClient
     FrontEndEquipamentoService frontEndEquipamentoAuditService;
 
+    @Inject
+    Template lavras;
+
+    @Inject
+    Template equipamentos;
+
     @GET
     @Path("lavras")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public List<Lavra> findAllLavra(){
-        List<Lavra> lavras = frontEndLavraService.findAll();
-        lavras = frontEndLavraAuditService.findAll();
-        return lavras;
+    @Produces(MediaType.TEXT_HTML)
+    @Consumes(MediaType.TEXT_HTML)
+    public TemplateInstance findAllLavra(){
+        List<Lavra> lavrasList = frontEndLavraService.findAll();
+        List<Lavra> lavrasAudit = frontEndLavraAuditService.findAll();
+        return lavras.data("lavras", lavrasList).data("lavrasAudit", lavrasAudit);
     }
 
     @GET
     @Path("equipamentos")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public List<Equipamento> findAllEquipamento(){
-        List<Equipamento> equipamentos = frontEndEquipamentoService.findAll();
-        equipamentos = frontEndEquipamentoAuditService.findAll();
-        return equipamentos;
+    @Produces(MediaType.TEXT_HTML)
+    @Consumes(MediaType.TEXT_HTML)
+    public TemplateInstance findAllEquipamento(){
+        List<Equipamento> equipamentosList = frontEndEquipamentoService.findAll();
+        List<Equipamento> equipamentosAuditList= frontEndEquipamentoAuditService.findAll();
+        return equipamentos.data("equipamentos", equipamentosList).data("equipamentosAudit", equipamentosAuditList);
     }
     
 }
