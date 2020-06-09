@@ -41,7 +41,6 @@ public class EquipamentoService {
         if (entity != null) {
             Lavra lavra = Lavra.findById(equipamento.getLavra().id);
             if (lavra != null){
-                //Lavra.persist(lavra);
                 entity.setLavra(lavra);
             }
             entity.setNome(equipamento.getNome());

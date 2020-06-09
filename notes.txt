@@ -32,31 +32,56 @@ mvn io.quarkus:quarkus-maven-plugin:1.5.0.Final:create \
     -DclassName="br.edu.puc.sca.resource.EquipamentoResource" \
     -Dpath="/api/v1/equipamentos"
 
-  <dependency>
-    <groupId>br.edu.puc.sca.domain</groupId>
-    <artifactId>sca-domain-msa</artifactId>
-    <version>1.0-SNAPSHOT</version>
-  </dependency>
-
-./mvnw quarkus:add-extension -Dextensions="quarkus-resteasy,quarkus-resteasy-jsonb,quarkus-smallrye-openapi,smallrye-metrics,quarkus-oidc,rest-client,quarkus-hibernate-orm-panache,quarkus-jdbc-postgresql"
-
-./mvnw quarkus:add-extension -Dextensions="quarkus-resteasy,quarkus-resteasy-jsonb,quarkus-hibernate-orm-panache,quarkus-jdbc-postgresql,quarkus-smallrye-openapi,smallrye-metrics,quarkus-oidc,rest-client"
-
+<dependency>
+  <groupId>br.edu.puc.sca.domain</groupId>
+  <artifactId>sca-domain-msa</artifactId>
+  <version>1.0-SNAPSHOT</version>
+</dependency>
 <dependency>
   <groupId>org.hibernate</groupId>
   <artifactId>hibernate-envers</artifactId>
 </dependency>
 
+./mvnw quarkus:add-extension -Dextensions="quarkus-resteasy,quarkus-resteasy-jsonb,quarkus-smallrye-openapi,smallrye-metrics,quarkus-oidc,rest-client,quarkus-hibernate-orm-panache,quarkus-jdbc-postgresql"
+
+./mvnw quarkus:add-extension -Dextensions="quarkus-resteasy,quarkus-resteasy-jsonb,quarkus-hibernate-orm-panache,quarkus-jdbc-postgresql,quarkus-smallrye-openapi,smallrye-metrics,quarkus-oidc,rest-client"
+
+mvn io.quarkus:quarkus-maven-plugin:1.5.0.Final:create \
+    -DprojectGroupId=br.edu.puc.sca.frontend \
+    -DprojectArtifactId=sca-frontend-msa \
+    -DclassName="br.edu.puc.sca.resource.frontend.EquipamentoResource" \
+    -Dpath="/frontend/v1/equipamentos"
+
+<dependency>
+  <groupId>br.edu.puc.sca.domain</groupId>
+  <artifactId>sca-domain-msa</artifactId>
+  <version>1.0-SNAPSHOT</version>
+</dependency>
+
+./mvnw quarkus:add-extension -Dextensions="rest-client"
 
 # Tokens
 
+* Frontend
 export access_token=$(\
   curl -X POST http://localhost:8080/auth/realms/sca/protocol/openid-connect/token \
-  --user sca-lavra-msa:2eda88de-9bd9-418c-bbc4-4f7af729404c \
+  --user sca-frontend-msa:674953d0-b06b-454b-a92d-114c0e733241 \
   -H 'content-type: application/x-www-form-urlencoded' \
-  -d 'username=user2&password=user2&grant_type=password' | jq --raw-output '.access_token' \
- )
+  -d 'username=user1&password=user1&grant_type=password' | jq --raw-output '.access_token' \
+)
 
-curl -v -X GET \
-  http://localhost:8180/api/v1/users/me \
-  -H "Authorization: Bearer "$access_token
+* Lavras Backend
+export access_token=$(\
+ curl -X POST http://localhost:8080/auth/realms/sca/protocol/openid-connect/token \
+ --user sca-lavra-api-msa:dde0ce0c-1967-4efd-ae49-4ddbeb765e05 \
+ -H 'content-type: application/x-www-form-urlencoded' \
+ -d 'username=user1&password=user1&grant_type=password' | jq --raw-output '.access_token' \
+)
+
+* Equipamento Backend
+export access_token=$(\
+  curl -X POST http://localhost:8080/auth/realms/sca/protocol/openid-connect/token \
+  --user sca-equipamento-api-msa:f71f21e0-98d5-43b0-a409-71f67351c759 \
+  -H 'content-type: application/x-www-form-urlencoded' \
+  -d 'username=user1&password=user1&grant_type=password' | jq --raw-output '.access_token' \
+)
