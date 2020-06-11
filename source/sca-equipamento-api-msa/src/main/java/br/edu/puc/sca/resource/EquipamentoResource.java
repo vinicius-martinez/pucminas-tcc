@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
@@ -73,6 +74,7 @@ public class EquipamentoResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
+    @RolesAllowed("admin")
     public Response remove(@PathParam("id") Long id) {
         equipamentoService.delete(id);
         return Response.noContent().status(Response.Status.OK).build();

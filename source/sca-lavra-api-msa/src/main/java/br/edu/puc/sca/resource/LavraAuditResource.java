@@ -10,11 +10,16 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.eclipse.microprofile.faulttolerance.Retry;
+import org.jboss.logging.Logger;
+
 import br.edu.puc.sca.domain.Lavra;
 import br.edu.puc.sca.service.LavraAuditService;
 
 @Path("/api/v1/lavras/audit")
 public class LavraAuditResource {
+
+    //private static final Logger LOGGER = Logger.getLogger(LavraAuditResource.class);
 
     @Inject
     LavraAuditService lavraAuditService;
@@ -22,6 +27,7 @@ public class LavraAuditResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Retry(maxRetries = 4)
     public List<Lavra> getAll() {
         List<Lavra> lavraList= lavraAuditService.findAll();
         return lavraList;

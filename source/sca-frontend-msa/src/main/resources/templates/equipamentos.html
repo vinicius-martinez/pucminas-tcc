@@ -39,6 +39,7 @@
                     <th scope="col" class="fit">Descricao</th>
                     <th scope="col" class="fit">Status</th>
                     <th scope="col" class="fit">Metodo Lavra</th>
+                    <th scope="col" class="fit">Nome Lavra</th>
                 </tr>
             </thead>
         {#if equipamentos.size == 0}
@@ -54,6 +55,7 @@
                 <td scope="row" class="fit">{equipamento.descricao}</td>
                 <td scope="row" class="fit">{equipamento.status}</td>
                 <td scope="row" class="fit">{equipamento.metodoLavra}</td>
+                <td scope="row" class="fit">{equipamento.nomeLavra}</td>
             </tr>
         {/for}
         {/if}
@@ -70,7 +72,7 @@
                     <th scope="col" class="fit">Descricao</th>
                     <th scope="col" class="fit">Status</th>
                     <th scope="col" class="fit">Metodo Lavra</th>
-                    <th scope="col" class="fit">Lavra</th>
+                    <th scope="col" class="fit">Nome Lavra</th>
                 </tr>
             </thead>
         {#if equipamentosAudit.size == 0}
@@ -86,7 +88,7 @@
                 <td scope="row" class="fit">{equipamentoAudit.descricao}</td>
                 <td scope="row" class="fit">{equipamentoAudit.status}</td>
                 <td scope="row" class="fit">{equipamentoAudit.metodoLavra}</td>
-                <td scope="row" class="fit">{equipamentoAudit.lavra.id}</td>
+                <td scope="row" class="fit">{equipamentoAudit.nomeLavra}</td>
             </tr>
         {/for}
         {/if}

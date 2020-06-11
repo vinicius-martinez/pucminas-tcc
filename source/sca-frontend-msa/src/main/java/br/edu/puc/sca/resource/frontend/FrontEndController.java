@@ -1,5 +1,6 @@
 package br.edu.puc.sca.resource.frontend;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -54,8 +55,28 @@ public class FrontEndController {
     @Consumes(MediaType.TEXT_HTML)
     public TemplateInstance findAllLavra(){
         List<Lavra> lavrasList = frontEndLavraService.findAll();
-        List<Lavra> lavrasAudit = frontEndLavraAuditService.findAll();
-        return lavras.data("lavras", lavrasList).data("lavrasAudit", lavrasAudit);
+        List<LavraForm> lavraFormList = new ArrayList<LavraForm>(0);
+        for (Lavra lavra : lavrasList) {
+            LavraForm lavraForm = new LavraForm();
+            lavraForm.setId(lavra.id);
+            lavraForm.setNome(lavra.getDescricao());
+            lavraForm.setDescricao(lavra.getDescricao());
+            lavraForm.setMetodoLavra(lavra.getMetodoLavra().name());
+            lavraForm.setStatus(lavra.getStatus().name());
+            lavraFormList.add(lavraForm);
+        }
+        List<LavraForm> lavraFormAuditList = new ArrayList<LavraForm>(0);
+        for (Lavra lavra : lavrasList) {
+            LavraForm lavraFormAudit = new LavraForm();
+            lavraFormAudit.setId(lavra.id);
+            lavraFormAudit.setNome(lavra.getDescricao());
+            lavraFormAudit.setDescricao(lavra.getDescricao());
+            lavraFormAudit.setMetodoLavra(lavra.getMetodoLavra().name());
+            lavraFormAudit.setStatus(lavra.getStatus().name());
+            lavraFormAuditList.add(lavraFormAudit);
+        }
+        return lavras.data("lavras", lavraFormList)
+            .data("lavrasAudit", lavraFormAuditList);
     }
 
     @GET
@@ -64,8 +85,31 @@ public class FrontEndController {
     @Consumes(MediaType.TEXT_HTML)
     public TemplateInstance findAllEquipamento(){
         List<Equipamento> equipamentosList = frontEndEquipamentoService.findAll();
+        List<EquipamentosForm> equipamentosFormsList = new ArrayList<EquipamentosForm>(0);
+        for (Equipamento equipamento : equipamentosList) {
+            EquipamentosForm equipamentosForm = new EquipamentosForm();
+            equipamentosForm.setId(equipamento.id);
+            equipamentosForm.setNome(equipamento.getNome());
+            equipamentosForm.setDescricao(equipamento.getDescricao());
+            equipamentosForm.setMetodoLavra(equipamento.getMetodoLavra().name());
+            equipamentosForm.setStatus(equipamento.getStatus().name());
+            equipamentosForm.setNomeLavra(equipamento.getLavra().getNome());
+            equipamentosFormsList.add(equipamentosForm);
+        }
+        List<EquipamentosForm> equipamentosFormsAuditList = new ArrayList<EquipamentosForm>(0);
         List<Equipamento> equipamentosAuditList= frontEndEquipamentoAuditService.findAll();
-        return equipamentos.data("equipamentos", equipamentosList).data("equipamentosAudit", equipamentosAuditList);
+        for (Equipamento equipamento : equipamentosAuditList) {
+            EquipamentosForm equipamentosFormAudit = new EquipamentosForm();
+            equipamentosFormAudit.setId(equipamento.id);
+            equipamentosFormAudit.setNome(equipamento.getNome());
+            equipamentosFormAudit.setDescricao(equipamento.getDescricao());
+            equipamentosFormAudit.setMetodoLavra(equipamento.getMetodoLavra().name());
+            equipamentosFormAudit.setStatus(equipamento.getStatus().name());
+            equipamentosFormAudit.setNomeLavra(equipamento.getLavra().getNome());
+            equipamentosFormsAuditList.add(equipamentosFormAudit);
+        }
+        return equipamentos.data("equipamentos", equipamentosFormsList)
+            .data("equipamentosAudit", equipamentosFormsAuditList);
     }
     
 }
