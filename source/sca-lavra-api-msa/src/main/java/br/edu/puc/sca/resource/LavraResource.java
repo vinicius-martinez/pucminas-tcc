@@ -18,6 +18,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 import br.edu.puc.sca.domain.Lavra;
 import br.edu.puc.sca.domain.MetodoLavra;
 import br.edu.puc.sca.domain.Status;
@@ -33,7 +35,7 @@ public class LavraResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public List<Lavra> getAll() {
-        List<Lavra> lavraList = lavraService.findAll();
+        final List<Lavra> lavraList = lavraService.findAll();
         return lavraList;
     }
 
@@ -41,8 +43,8 @@ public class LavraResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public Response get(@PathParam("id") Long id) {
-        Lavra entitity = lavraService.findById(id);
+    public Response get(@PathParam("id") final Long id) {
+        final Lavra entitity = lavraService.findById(id);
         if (entitity != null) {
             return Response.ok(entitity).build();
         }
@@ -52,7 +54,7 @@ public class LavraResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Lavra lavra) {
+    public Response create(final Lavra lavra) {
         lavraService.persist(lavra);
         return Response.ok(lavra).status(Response.Status.CREATED).build();
     }
@@ -60,8 +62,8 @@ public class LavraResource {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(Lavra lavra) {
-        Lavra entity = lavraService.update(lavra);
+    public Response update(final Lavra lavra) {
+        final Lavra entity = lavraService.update(lavra);
         if (entity != null){
             return Response.ok(entity).status(Response.Status.OK).build();
         }
@@ -73,7 +75,7 @@ public class LavraResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     @RolesAllowed("admin")
-    public Response remove(@PathParam("id") Long id) {
+    public Response remove(@PathParam("id") final Long id) {
         lavraService.delete(id);
         return Response.noContent().status(Response.Status.OK).build();
     }
@@ -83,9 +85,9 @@ public class LavraResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("load")
     public Response load(){
-            List<Lavra> lavraList = new ArrayList<Lavra>(10);
+            final List<Lavra> lavraList = new ArrayList<Lavra>(10);
         for (int i = 0; i < 10; i++) {
-            Lavra lavra = new Lavra();
+            final Lavra lavra = new Lavra();
             lavra.setNome("Lavra" + i);
             lavra.setDescricao("Descricao Lavra" + i);
             lavra.setMetodoLavra(MetodoLavra.values()[new Random().nextInt(MetodoLavra.values().length)]);

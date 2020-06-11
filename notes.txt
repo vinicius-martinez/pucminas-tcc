@@ -1,4 +1,5 @@
 docker run --name postgres-lavra -e "POSTGRES_PASSWORD=postgres" -p 5433:5432 -v ~/Desktop/PostgreSQL:/var/lib/postgresql/data -d postgres
+docker run -p 5775:5775/udp -p 6831:6831/udp -p 6832:6832/udp -p 5778:5778 -p 16686:16686 -p 14268:14268 jaegertracing/all-in-one:latest
 docker run  -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin -p 8080:8080 quay.io/keycloak/keycloak:7.0.1
 
 mvn io.quarkus:quarkus-maven-plugin:1.5.0.Final:create \
@@ -73,7 +74,7 @@ export access_token=$(\
 * Lavras Backend
 export access_token=$(\
  curl -X POST http://localhost:8080/auth/realms/sca/protocol/openid-connect/token \
- --user sca-lavra-api-msa:dde0ce0c-1967-4efd-ae49-4ddbeb765e05 \
+ --user sca-lavra-api-msa:3949aaf0-6ee8-400b-8a63-4120cac155a4 \
  -H 'content-type: application/x-www-form-urlencoded' \
  -d 'username=user1&password=user1&grant_type=password' | jq --raw-output '.access_token' \
 )
