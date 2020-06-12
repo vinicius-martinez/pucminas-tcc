@@ -1,0 +1,6 @@
+# docker run -p 9090:9090 viniciusmartinez/quarkus_prom:1.0
+# docker build -t viniciusmartinez/quarkus_prom:1.0 -f Dockerfile.prometheus .
+
+FROM prom/prometheus
+
+COPY prometheus.yml /etc/prometheus/prometheus.yml
