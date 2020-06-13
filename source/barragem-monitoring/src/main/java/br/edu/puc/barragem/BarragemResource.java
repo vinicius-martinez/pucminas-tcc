@@ -23,9 +23,9 @@ import org.eclipse.microprofile.metrics.MetricRegistry;
 import org.eclipse.microprofile.metrics.MetricType;
 import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.Tag;
-import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Gauge;
 import org.eclipse.microprofile.metrics.annotation.RegistryType;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import br.edu.puc.barragem.domain.Barragem;
 import br.edu.puc.barragem.domain.CategoriaRisco;
@@ -39,6 +39,10 @@ public class BarragemResource {
 
     long maiorQuantidadeRejeito = 0L;
     long menorQuantidadeRejeito = 1000;
+
+    @Inject
+    @RestClient
+    NotificationRestClient notificationRestClient;
 
     @Inject
     @RegistryType(type = MetricRegistry.Type.APPLICATION)
@@ -92,6 +96,9 @@ public class BarragemResource {
                     }
                     if (!barragemEntity.getNivelEmergencia().equals(barragem.getNivelEmergencia())){
                         barragemEntity.setNivelEmergencia(barragem.getNivelEmergencia());
+                        if (barragemEntity.getNivelEmergencia().equals(NivelEmergencia.NIVEL_1)){
+                            notificationRestClient.addNotification(barragemEntity);
+                        }
                     }
                     if (!barragemEntity.getQuantidadeRejeito().equals(barragem.getQuantidadeRejeito())){
                         barragemEntity.setQuantidadeRejeito(barragem.getQuantidadeRejeito());

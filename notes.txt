@@ -1,65 +1,8 @@
 docker run --name postgres-lavra -e "POSTGRES_PASSWORD=postgres" -p 5433:5432 -v ~/Desktop/PostgreSQL:/var/lib/postgresql/data -d postgres
 docker run -p 5775:5775/udp -p 6831:6831/udp -p 6832:6832/udp -p 5778:5778 -p 16686:16686 -p 14268:14268 jaegertracing/all-in-one:latest
 docker run  -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin -p 8080:8080 quay.io/keycloak/keycloak:7.0.1
-
-mvn io.quarkus:quarkus-maven-plugin:1.5.0.Final:create \
-    -DprojectGroupId=br.edu.puc.sca.domain \
-    -DprojectArtifactId=sca-domain-msa
-
-./mvnw quarkus:add-extension -Dextensions="quarkus-hibernate-orm-panache,quarkus-jdbc-postgresql"
-
-<dependency>
-  <groupId>org.hibernate</groupId>
-  <artifactId>hibernate-envers</artifactId>
-</dependency>
-
-mvn io.quarkus:quarkus-maven-plugin:1.5.0.Final:create \
-    -DprojectGroupId=br.edu.puc.sca.lavra \
-    -DprojectArtifactId=sca-lavra-api-msa \
-    -DclassName="br.edu.puc.sca.resource.LavraResource" \
-    -Dpath="/api/v1/lavras"
-
-./mvnw quarkus:add-extension -Dextensions="quarkus-resteasy,quarkus-resteasy-jsonb,quarkus-smallrye-openapi,smallrye-metrics,quarkus-oidc,rest-client,quarkus-hibernate-orm-panache,quarkus-jdbc-postgresql"
-
-<dependency>
-  <groupId>br.edu.puc.sca.domain</groupId>
-  <artifactId>sca-domain-msa</artifactId>
-  <version>1.0-SNAPSHOT</version>
-</dependency>
-
-mvn io.quarkus:quarkus-maven-plugin:1.5.0.Final:create \
-    -DprojectGroupId=br.edu.puc.sca.equipamento \
-    -DprojectArtifactId=sca-equipamento-api-msa \
-    -DclassName="br.edu.puc.sca.resource.EquipamentoResource" \
-    -Dpath="/api/v1/equipamentos"
-
-<dependency>
-  <groupId>br.edu.puc.sca.domain</groupId>
-  <artifactId>sca-domain-msa</artifactId>
-  <version>1.0-SNAPSHOT</version>
-</dependency>
-<dependency>
-  <groupId>org.hibernate</groupId>
-  <artifactId>hibernate-envers</artifactId>
-</dependency>
-
-./mvnw quarkus:add-extension -Dextensions="quarkus-resteasy,quarkus-resteasy-jsonb,quarkus-smallrye-openapi,smallrye-metrics,quarkus-oidc,rest-client,quarkus-hibernate-orm-panache,quarkus-jdbc-postgresql"
-
-./mvnw quarkus:add-extension -Dextensions="quarkus-resteasy,quarkus-resteasy-jsonb,quarkus-hibernate-orm-panache,quarkus-jdbc-postgresql,quarkus-smallrye-openapi,smallrye-metrics,quarkus-oidc,rest-client"
-
-mvn io.quarkus:quarkus-maven-plugin:1.5.0.Final:create \
-    -DprojectGroupId=br.edu.puc.sca.frontend \
-    -DprojectArtifactId=sca-frontend-msa \
-    -DclassName="br.edu.puc.sca.resource.frontend.EquipamentoResource" \
-    -Dpath="/frontend/v1/equipamentos"
-
-<dependency>
-  <groupId>br.edu.puc.sca.domain</groupId>
-  <artifactId>sca-domain-msa</artifactId>
-  <version>1.0-SNAPSHOT</version>
-</dependency>
-
-./mvnw quarkus:add-extension -Dextensions="rest-client"
+brew services start grafana
+sh ~/Tech/prometheus/prometheus-2.19.0.darwin-amd64/prometheus
 
 # Tokens
 
